@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import '../../common/style/style.dart';
 import '../../common/util/navigator_slide_helper.dart';
 import '../login/login_screen.dart';
+import '../widgets/button_widget.dart';
 
 class Onboarding3Screen extends StatelessWidget {
   const Onboarding3Screen({super.key});
@@ -31,25 +32,17 @@ class Onboarding3Screen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 40.h),
-              SizedBox(
-                height: 45.h,
-                width: 110.w,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).pushAndRemoveUntil(
-                        NavigatorSlideHelper(
-                            child: const LoginScreen(),
-                            direction: AxisDirection.left),
-                        (route) => false);
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.secondaryColor),
-                  child: Text(
-                    'Next',
-                    style: AppFont.largeText
-                        .copyWith(color: AppColor.secondaryTextColor),
-                  ),
-                ),
+              ButtonWidget(
+                height: 45,
+                width: 110,
+                text: 'Next',
+                onTap: () {
+                  Navigator.of(context).pushAndRemoveUntil(
+                      NavigatorSlideHelper(
+                          child: const LoginScreen(),
+                          direction: AxisDirection.left),
+                      (route) => false);
+                },
               ),
             ],
           ),

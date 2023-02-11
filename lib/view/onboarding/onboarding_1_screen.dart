@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:toko_sayur/common/util/navigator_slide_helper.dart';
 import 'package:toko_sayur/view/login/login_screen.dart';
 import 'package:toko_sayur/view/onboarding/onboarding_2_screen.dart';
+import 'package:toko_sayur/view/widgets/button_widget.dart';
 
 import '../../common/style/style.dart';
 
@@ -50,25 +51,17 @@ class Onboarding1Screen extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 40.h),
-              SizedBox(
-                height: 45.h,
-                width: 110.w,
-                child: ElevatedButton(
-                  onPressed: () {
-                    Navigator.of(context).push(
-                      NavigatorSlideHelper(
-                          child: const Onboarding2Screen(),
-                          direction: AxisDirection.left),
-                    );
-                  },
-                  style: ElevatedButton.styleFrom(
-                      backgroundColor: AppColor.secondaryColor),
-                  child: Text(
-                    'Next',
-                    style: AppFont.largeText
-                        .copyWith(color: AppColor.secondaryTextColor),
-                  ),
-                ),
+              ButtonWidget(
+                height: 45,
+                width: 110,
+                text: 'Next',
+                onTap: () {
+                  Navigator.of(context).push(
+                    NavigatorSlideHelper(
+                        child: const Onboarding2Screen(),
+                        direction: AxisDirection.left),
+                  );
+                },
               ),
             ],
           ),
