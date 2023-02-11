@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "830279665257",
+    "project_id": "toko-sayur-2e2b9",
+    "storage_bucket": "toko-sayur-2e2b9.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:830279665257:android:8377d26efbdc1c6ef744f8",
+        "android_client_info": {
+          "package_name": "com.example.toko_sayur"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "830279665257-keidtp39d1j9a66m43ursrgotcg6hfsn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBrmmenogwTANFxjc9BO1nsxzBFWyL_4iQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "830279665257-keidtp39d1j9a66m43ursrgotcg6hfsn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
