@@ -21,14 +21,14 @@ class CustomField extends StatefulWidget {
 }
 
 class _CustomFieldState extends State<CustomField> {
-  bool obscureText = false;
+  bool obscureText = true;
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 55.h,
       width: double.maxFinite,
       child: TextField(
-        obscureText: obscureText,
+        obscureText: widget.obscureText == true ? obscureText : false,
         controller: widget.controller,
         style: AppFont.mediumText.copyWith(color: const Color(0xFF999999)),
         cursorColor: Colors.white,
@@ -51,8 +51,8 @@ class _CustomFieldState extends State<CustomField> {
                   },
                   child: Icon(
                     obscureText == false
-                        ? Icons.visibility_off
-                        : Icons.visibility_rounded,
+                        ? Icons.visibility_rounded
+                        : Icons.visibility_off,
                     color: Colors.grey,
                   ),
                 )

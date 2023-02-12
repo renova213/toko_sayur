@@ -1,8 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:provider/provider.dart';
+import 'package:toko_sayur/common/util/navigator_fade_helper.dart';
+import 'package:toko_sayur/model/login_model.dart';
+import 'package:toko_sayur/view/admin/home/admin_home_screen.dart';
+import 'package:toko_sayur/view/register/register_screen.dart';
+import 'package:toko_sayur/view/user/home/user_home_screen.dart';
 import 'package:toko_sayur/view/widgets/button_widget.dart';
 import 'package:toko_sayur/view/widgets/custom_field.dart';
 import 'package:toko_sayur/view/widgets/disable_field.dart';
+import 'package:toko_sayur/view_model/login_view_model.dart';
+import 'package:toko_sayur/view_model/user_view_model.dart';
 
 import '../../common/style/style.dart';
 
@@ -14,6 +23,16 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+
+  @override
+  void dispose() {
+    super.dispose();
+    _emailController.dispose();
+    _passwordController.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -42,11 +61,59 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   SizedBox(height: 40.h),
-                  ButtonWidget(
-                      height: 50,
-                      width: double.maxFinite,
-                      text: 'Login',
-                      onTap: () {}),
+                  Consumer<LoginViewModel>(
+                    builder: (context, login, _) => Consumer<UserViewModel>(
+                      builder: (context, user, _) => ButtonWidget(
+                        height: 50,
+                        width: double.maxFinite,
+                        text: 'Login',
+                        onTap: () async {
+                          try {
+                            await login
+                                .login(
+                                  LoginModel(
+                                      email: _emailController.text,
+                                      password: _passwordController.text),
+                                )
+                                .then(
+                                  (_) async =>
+                                      await user.getUser(login.user.email!),
+                                )
+                                .then(
+                                  (_) => Fluttertoast.showToast(
+                                      msg: 'Berhasil Login'),
+                                )
+                                .then(
+                              (_) {
+                                _emailController.clear();
+                                _passwordController.clear();
+                              },
+                            ).then(
+                              (_) {
+                                if (user.user.role == 'admin') {
+                                  Navigator.of(context).pushAndRemoveUntil(
+                                      NavigatorFadeHelper(
+                                        child: const AdminHomeScreen(),
+                                      ),
+                                      (route) => false);
+                                }
+                                if (user.user.role == 'user') {
+                                  return Navigator.of(context)
+                                      .pushAndRemoveUntil(
+                                          NavigatorFadeHelper(
+                                            child: const UserHomeScreen(),
+                                          ),
+                                          (route) => false);
+                                }
+                              },
+                            );
+                          } catch (e) {
+                            Fluttertoast.showToast(msg: e.toString());
+                          }
+                        },
+                      ),
+                    ),
+                  ),
                   SizedBox(height: 12.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -58,7 +125,13 @@ class _LoginScreenState extends State<LoginScreen> {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            NavigatorFadeHelper(
+                              child: const RegisterScreen(),
+                            ),
+                          );
+                        },
                         child: Text("Register", style: AppFont.subtitle),
                       ),
                     ],
@@ -103,14 +176,14 @@ class _LoginScreenState extends State<LoginScreen> {
         ),
         SizedBox(height: 20.h),
         CustomField(
-          controller: TextEditingController(),
+          controller: _emailController,
           hintText: 'Email',
           icon: const Icon(Icons.mail),
           obscureText: false,
         ),
         SizedBox(height: 16.h),
         CustomField(
-            controller: TextEditingController(),
+            controller: _passwordController,
             hintText: 'Password',
             obscureText: true,
             icon: const Icon(Icons.lock)),
