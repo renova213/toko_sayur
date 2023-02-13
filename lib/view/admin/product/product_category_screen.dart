@@ -5,6 +5,7 @@ import 'package:toko_sayur/common/style/style.dart';
 import 'package:toko_sayur/common/util/general_dialog.dart';
 import 'package:toko_sayur/model/product_model.dart';
 import 'package:toko_sayur/view/admin/product/widgets/modal_add_product_category.dart';
+import 'package:toko_sayur/view/admin/product/widgets/modal_update_product_category.dart';
 
 import '../../../view_model/product_view_model.dart';
 
@@ -68,12 +69,23 @@ class _ProductCategoryScreenState extends State<ProductCategoryScreen> {
                         children: [
                           Text(data.categoryName, style: AppFont.subtitle),
                           SizedBox(height: 8.h),
-                          Text(data.price, style: AppFont.mediumText),
+                          Text('Rp. ${data.price}', style: AppFont.mediumText),
+                          SizedBox(height: 8.h),
+                          Text('Stock: ${data.stock}',
+                              style: AppFont.mediumText),
                         ],
                       ),
                       const Spacer(),
                       IconButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          GeneralDialog.generalDialog(
+                            context: context,
+                            screen: ModalUpdateProductCategory(
+                                index: index,
+                                productCategories:
+                                    notifier.temporaryCategoryProducts),
+                          );
+                        },
                         icon: const Icon(Icons.edit),
                       ),
                       IconButton(

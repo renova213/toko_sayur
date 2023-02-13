@@ -29,7 +29,9 @@ class ProductModel {
         'productDescription': productDescription,
         'productCategory': productCategory
             .map((e) => ProductCategoryModel(
-                    categoryName: e.categoryName, price: e.price)
+                    categoryName: e.categoryName,
+                    price: e.price,
+                    stock: e.stock)
                 .toJson())
             .toList()
       };
@@ -38,13 +40,18 @@ class ProductModel {
 class ProductCategoryModel {
   final String categoryName;
   final String price;
+  final String stock;
 
-  ProductCategoryModel({required this.categoryName, required this.price});
+  ProductCategoryModel(
+      {required this.categoryName, required this.price, required this.stock});
 
   factory ProductCategoryModel.fromMap(Map<String, dynamic> map) =>
       ProductCategoryModel(
-          categoryName: map['categoryName'], price: map['price']);
+        categoryName: map['categoryName'],
+        price: map['price'],
+        stock: map['stock'],
+      );
 
   Map<String, dynamic> toJson() =>
-      {'categoryName': categoryName, 'price': price};
+      {'categoryName': categoryName, 'price': price, 'stock': stock};
 }

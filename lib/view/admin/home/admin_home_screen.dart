@@ -9,6 +9,7 @@ import 'package:toko_sayur/view_model/product_view_model.dart';
 
 import '../../../common/style/style.dart';
 import '../../widgets/loading.dart';
+import '../product/detail_product_screen.dart';
 
 class AdminHomeScreen extends StatelessWidget {
   const AdminHomeScreen({super.key});
@@ -37,45 +38,51 @@ class AdminHomeScreen extends StatelessWidget {
                             mainAxisSpacing: 12,
                             crossAxisSpacing: 16,
                             crossAxisCount: 2,
-                            childAspectRatio: 2 / 2.6),
+                            childAspectRatio: 2 / 2.35),
                     itemBuilder: (context, index) {
                       final data = notifier.products[index];
-                      return Container(
-                        padding: EdgeInsets.all(12.r),
-                        color: const Color(0xFFF5F5F5),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            CachedNetworkImage(
-                              width: double.maxFinite,
-                              height: 120,
-                              fit: BoxFit.fill,
-                              imageUrl: data.productImage,
-                              placeholder: (context, url) => const Loading(
-                                  width: double.maxFinite,
-                                  height: 120,
-                                  borderRadius: 0),
-                              errorWidget: (context, url, error) => Image.asset(
-                                  'placeholder_image',
-                                  width: double.maxFinite,
-                                  height: 120.h),
-                            ),
-                            SizedBox(height: 8.h),
-                            Text(data.productName,
-                                style: AppFont.boldMediumText,
-                                maxLines: 2,
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center),
-                            SizedBox(height: 8.h),
-                            Text(
-                                data.productCategory.length == 1
-                                    ? 'Rp. ${data.productCategory.first.price}'
-                                    : 'Rp. ${data.productCategory.first.price} - ${data.productCategory.last.price}',
-                                style: AppFont.smallText
-                                    .copyWith(color: AppColor.secondaryColor),
-                                overflow: TextOverflow.ellipsis,
-                                textAlign: TextAlign.center),
-                          ],
+                      return GestureDetector(
+                        onTap: () => Navigator.of(context).push(
+                          NavigatorFadeHelper(
+                            child: DetailAdminProductScreen(product: data),
+                          ),
+                        ),
+                        child: Container(
+                          padding: EdgeInsets.all(12.r),
+                          color: const Color(0xFFF5F5F5),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              CachedNetworkImage(
+                                width: double.maxFinite,
+                                height: 120.h,
+                                fit: BoxFit.fill,
+                                imageUrl: data.productImage,
+                                placeholder: (context, url) => const Loading(
+                                    width: double.maxFinite,
+                                    height: 120,
+                                    borderRadius: 0),
+                                errorWidget: (context, url, error) =>
+                                    Image.asset('placeholder_image',
+                                        width: double.maxFinite, height: 120.h),
+                              ),
+                              SizedBox(height: 8.h),
+                              Text(data.productName,
+                                  style: AppFont.boldMediumText,
+                                  maxLines: 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center),
+                              SizedBox(height: 8.h),
+                              Text(
+                                  data.productCategory.length == 1
+                                      ? 'Rp. ${data.productCategory.first.price}'
+                                      : 'Rp. ${data.productCategory.first.price} - ${data.productCategory.last.price}',
+                                  style: AppFont.smallText
+                                      .copyWith(color: AppColor.secondaryColor),
+                                  overflow: TextOverflow.ellipsis,
+                                  textAlign: TextAlign.center),
+                            ],
+                          ),
                         ),
                       );
                     },

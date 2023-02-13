@@ -10,14 +10,17 @@ import '../../../../common/style/style.dart';
 import '../../../widgets/button_widget.dart';
 import 'field_product.dart';
 
-class ModalAddCharacterBanner extends StatefulWidget {
-  const ModalAddCharacterBanner({super.key});
+class ModalUpdateProductCategory extends StatefulWidget {
+  final int index;
+  final List<ProductCategoryModel> productCategories;
+  const ModalUpdateProductCategory(
+      {super.key, required this.index, required this.productCategories});
 
   @override
-  State<ModalAddCharacterBanner> createState() => _ModalAddWorkspaceState();
+  State<ModalUpdateProductCategory> createState() => _ModalAddWorkspaceState();
 }
 
-class _ModalAddWorkspaceState extends State<ModalAddCharacterBanner> {
+class _ModalAddWorkspaceState extends State<ModalUpdateProductCategory> {
   final TextEditingController _categoryNameController = TextEditingController();
   final TextEditingController _productPriceController = TextEditingController();
   final TextEditingController _stockController = TextEditingController();
@@ -28,6 +31,15 @@ class _ModalAddWorkspaceState extends State<ModalAddCharacterBanner> {
     _categoryNameController.dispose();
     _productPriceController.dispose();
     _stockController.dispose();
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _categoryNameController.text =
+        widget.productCategories[widget.index].categoryName;
+    _productPriceController.text = widget.productCategories[widget.index].price;
+    _stockController.text = widget.productCategories[widget.index].stock;
   }
 
   @override
@@ -127,7 +139,7 @@ class _ModalAddWorkspaceState extends State<ModalAddCharacterBanner> {
               builder: (context, notifier, _) => ButtonWidget(
                 height: 45,
                 width: double.maxFinite,
-                text: "Add Product Category",
+                text: "Update Product Category",
                 onTap: () async {
                   if (_categoryNameController.text.isEmpty ||
                       _productPriceController.text.isEmpty ||
@@ -136,12 +148,12 @@ class _ModalAddWorkspaceState extends State<ModalAddCharacterBanner> {
                         msg: "Field Can't Be Empty", textColor: Colors.white);
                   } else {
                     await notifier
-                        .addTemporaryCategoryProduct(
-                          ProductCategoryModel(
-                              price: _productPriceController.text,
-                              categoryName: _categoryNameController.text,
-                              stock: _stockController.text),
-                        )
+                        .updateTemporaryCategoryProduct(
+                            ProductCategoryModel(
+                                price: _productPriceController.text,
+                                categoryName: _categoryNameController.text,
+                                stock: _stockController.text),
+                            widget.index)
                         .then(
                           (_) => Navigator.pop(context),
                         );

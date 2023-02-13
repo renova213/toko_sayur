@@ -16,6 +16,7 @@ class ProductViewModel extends ChangeNotifier {
   File? _image;
   String? _imageName;
   final _imagePicker = ImagePicker();
+  int _indexProductCategory = 0;
 
   AppState get appState => _appState;
   List<ProductModel> get products => _products;
@@ -24,6 +25,7 @@ class ProductViewModel extends ChangeNotifier {
   String? get urlProductImage => _urlProductImage;
   File? get image => _image;
   String? get imageName => _imageName;
+  int get indexProductCategory => _indexProductCategory;
 
   Future<void> getProducts() async {
     try {
@@ -95,6 +97,11 @@ class ProductViewModel extends ChangeNotifier {
       ProductCategoryModel productCategory, int index) async {
     _temporaryCategoryProducts.removeAt(index);
     _temporaryCategoryProducts.insert(index, productCategory);
+    notifyListeners();
+  }
+
+  void changeIndexProductCategory(int index) {
+    _indexProductCategory = index;
     notifyListeners();
   }
 
