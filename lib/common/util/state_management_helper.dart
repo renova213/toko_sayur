@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:toko_sayur/view_model/forgot_password_view_model.dart';
 import 'package:toko_sayur/view_model/login_view_model.dart';
+import 'package:toko_sayur/view_model/product_view_model.dart';
 import 'package:toko_sayur/view_model/register_view_model.dart';
 import 'package:toko_sayur/view_model/user_view_model.dart';
 
@@ -11,6 +13,8 @@ class StateManagementHelper {
         ChangeNotifierProvider(create: (_) => LoginViewModel()),
         ChangeNotifierProvider(create: (_) => RegisterViewModel()),
         ChangeNotifierProvider(create: (_) => UserViewModel()),
+        ChangeNotifierProvider(create: (_) => ForgotPasswordViewModel()),
+        ChangeNotifierProvider(create: (_) => ProductViewModel()),
       ],
       child: widget,
     );

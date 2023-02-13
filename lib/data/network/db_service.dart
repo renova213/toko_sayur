@@ -1,5 +1,8 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:toko_sayur/model/login_model.dart';
 import 'package:toko_sayur/model/register_model.dart';
 
@@ -7,6 +10,7 @@ import 'base_service.dart';
 
 FirebaseFirestore db = FirebaseFirestore.instance;
 FirebaseAuth auth = FirebaseAuth.instance;
+FirebaseStorage storage = FirebaseStorage.instance;
 
 class DBService implements BaseService {
   @override
@@ -86,6 +90,27 @@ class DBService implements BaseService {
           email: register.email, password: register.password);
     } on FirebaseAuthException catch (e) {
       throw e.code;
+    }
+  }
+
+  @override
+  Future forgotPassword(String email) async {
+    try {
+      await auth.sendPasswordResetEmail(email: email);
+    } on FirebaseAuthException catch (e) {
+      throw e.code;
+    }
+  }
+
+  @override
+  Future<String> uploadImage(File file, String path) async {
+    try {
+      final ref = storage.ref().child(path);
+      final upload = ref.putFile(file);
+
+      return await (await upload).ref.getDownloadURL();
+    } catch (_) {
+      throw 'Failed Upload Image';
     }
   }
 }

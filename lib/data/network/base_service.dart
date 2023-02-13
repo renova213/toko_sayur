@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:toko_sayur/model/login_model.dart';
@@ -16,4 +18,6 @@ abstract class BaseService {
       String collectionName, String id);
   Future<User> login(LoginModel login);
   Future register(RegisterModel register);
+  Future forgotPassword(String email);
+  Future<String> uploadImage(File file, String path);
 }

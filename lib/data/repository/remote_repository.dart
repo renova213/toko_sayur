@@ -23,6 +23,14 @@ class RemoteRepository {
     }
   }
 
+  Future forgotPassword(String email) async {
+    try {
+      return await service.forgotPassword(email);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
   Future<void> addUser(UserModel user, String id) async {
     try {
       service.addDocumentCustomID('user', user.toJson(), id);

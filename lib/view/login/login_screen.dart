@@ -4,7 +4,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:toko_sayur/common/util/navigator_fade_helper.dart';
 import 'package:toko_sayur/model/login_model.dart';
-import 'package:toko_sayur/view/admin/home/admin_home_screen.dart';
+import 'package:toko_sayur/view/admin/botnavbar_admin.dart';
+import 'package:toko_sayur/view/forgot_password/forgot_password_screen.dart';
 import 'package:toko_sayur/view/register/register_screen.dart';
 import 'package:toko_sayur/view/user/home/user_home_screen.dart';
 import 'package:toko_sayur/view/widgets/button_widget.dart';
@@ -52,7 +53,12 @@ class _LoginScreenState extends State<LoginScreen> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          NavigatorFadeHelper(
+                              child: const ForgotPasswordScreen()),
+                        );
+                      },
                       child: Text(
                         'Forgot Password',
                         style: AppFont.mediumText
@@ -93,7 +99,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 if (user.user.role == 'admin') {
                                   Navigator.of(context).pushAndRemoveUntil(
                                       NavigatorFadeHelper(
-                                        child: const AdminHomeScreen(),
+                                        child: const BotNavBarAdmin(),
                                       ),
                                       (route) => false);
                                 }

@@ -25,7 +25,12 @@ class MyApp extends StatelessWidget {
       designSize: const Size(375, 812),
       builder: (context, _) => StateManagementHelper.providers(
         MaterialApp(
-          theme: ThemeData(scaffoldBackgroundColor: AppColor.primaryColor),
+          debugShowCheckedModeBanner: false,
+          theme: ThemeData(
+            scaffoldBackgroundColor: AppColor.primaryColor,
+            appBarTheme:
+                const AppBarTheme(backgroundColor: AppColor.secondaryColor),
+          ),
           home: const SplashScreen(),
         ),
       ),
