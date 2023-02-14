@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:toko_sayur/view/onboarding/onboarding_1_screen.dart';
 
-import '../../common/style/style.dart';
-import '../../common/util/navigator_fade_helper.dart';
+import '../../../common/style/style.dart';
+import '../../../common/util/navigator_fade_helper.dart';
+import 'onboarding_1_screen.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);

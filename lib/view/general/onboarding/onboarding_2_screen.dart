@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:toko_sayur/common/util/navigator_slide_helper.dart';
-import 'package:toko_sayur/view/login/login_screen.dart';
-import 'package:toko_sayur/view/onboarding/onboarding_2_screen.dart';
-import 'package:toko_sayur/view/widgets/button_widget.dart';
 
-import '../../common/style/style.dart';
+import '../../../common/style/style.dart';
+import '../../../common/util/navigator_slide_helper.dart';
+import '../../widgets/button_widget.dart';
+import '../login/login_screen.dart';
+import 'onboarding_3_screen.dart';
 
-class Onboarding1Screen extends StatelessWidget {
-  const Onboarding1Screen({super.key});
+class Onboarding2Screen extends StatelessWidget {
+  const Onboarding2Screen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -37,14 +37,14 @@ class Onboarding1Screen extends StatelessWidget {
                   ),
                 ),
               ),
-              Image.asset('assets/images/onboarding_1.png',
+              Image.asset('assets/images/onboarding_2.png',
                   width: double.maxFinite, height: 253.h),
               SizedBox(height: 16.h),
-              Text('UD MANDIRI SHOPING',
+              Text('Pengiriman Di Jalan',
                   style: AppFont.subtitle, textAlign: TextAlign.center),
               SizedBox(height: 12.h),
               Text(
-                'Jelajahi sayuran terbaik & pesan',
+                'Dapatkan pesanan anda dengan pengiriman cepat',
                 textAlign: TextAlign.center,
                 style: AppFont.largeText.copyWith(
                   color: const Color(0xFF686161),
@@ -58,7 +58,7 @@ class Onboarding1Screen extends StatelessWidget {
                 onTap: () {
                   Navigator.of(context).push(
                     NavigatorSlideHelper(
-                        child: const Onboarding2Screen(),
+                        child: const Onboarding3Screen(),
                         direction: AxisDirection.left),
                   );
                 },

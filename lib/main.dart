@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:toko_sayur/common/util/state_management_helper.dart';
-import 'package:toko_sayur/view/onboarding/splash_screen.dart';
 
 import 'common/style/app_color.dart';
+import 'view/general/onboarding/splash_screen.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

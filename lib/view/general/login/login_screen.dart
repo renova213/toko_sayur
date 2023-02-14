@@ -5,8 +5,7 @@ import 'package:provider/provider.dart';
 import 'package:toko_sayur/common/util/navigator_fade_helper.dart';
 import 'package:toko_sayur/model/login_model.dart';
 import 'package:toko_sayur/view/admin/botnavbar_admin.dart';
-import 'package:toko_sayur/view/forgot_password/forgot_password_screen.dart';
-import 'package:toko_sayur/view/register/register_screen.dart';
+import 'package:toko_sayur/view/general/forgot_password/forgot_password_screen.dart';
 import 'package:toko_sayur/view/user/home/user_home_screen.dart';
 import 'package:toko_sayur/view/widgets/button_widget.dart';
 import 'package:toko_sayur/view/widgets/custom_field.dart';
@@ -14,7 +13,8 @@ import 'package:toko_sayur/view/widgets/disable_field.dart';
 import 'package:toko_sayur/view_model/login_view_model.dart';
 import 'package:toko_sayur/view_model/user_view_model.dart';
 
-import '../../common/style/style.dart';
+import '../../../common/style/style.dart';
+import '../register/register_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});

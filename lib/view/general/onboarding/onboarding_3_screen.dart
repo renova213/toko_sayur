@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-import '../../common/style/style.dart';
-import '../../common/util/navigator_slide_helper.dart';
+import '../../../common/style/style.dart';
+import '../../../common/util/navigator_slide_helper.dart';
+import '../../widgets/button_widget.dart';
 import '../login/login_screen.dart';
-import '../widgets/button_widget.dart';
 
 class Onboarding3Screen extends StatelessWidget {
   const Onboarding3Screen({super.key});

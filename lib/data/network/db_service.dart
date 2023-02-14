@@ -113,4 +113,13 @@ class DBService implements BaseService {
       throw 'Failed Upload Image';
     }
   }
+
+  @override
+  Future<void> deleteImage(String url) async {
+    try {
+      await storage.refFromURL(url).delete();
+    } catch (_) {
+      rethrow;
+    }
+  }
 }

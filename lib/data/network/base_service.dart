@@ -20,4 +20,5 @@ abstract class BaseService {
   Future register(RegisterModel register);
   Future forgotPassword(String email);
   Future<String> uploadImage(File file, String path);
+  Future<void> deleteImage(String url);
 }

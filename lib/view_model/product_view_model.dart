@@ -27,6 +27,7 @@ class ProductViewModel extends ChangeNotifier {
   String? get imageName => _imageName;
   int get indexProductCategory => _indexProductCategory;
 
+  //crud product
   Future<void> getProducts() async {
     try {
       changeAppState(AppState.loading);
@@ -34,6 +35,15 @@ class ProductViewModel extends ChangeNotifier {
       changeAppState(AppState.loaded);
     } catch (_) {
       changeAppState(AppState.failed);
+      rethrow;
+    }
+  }
+
+  Future<void> updateProduct(Map<String, dynamic> product, String id) async {
+    try {
+      await remoteRepository.updateProduct(product, id);
+      getProducts();
+    } catch (_) {
       rethrow;
     }
   }
@@ -48,11 +58,29 @@ class ProductViewModel extends ChangeNotifier {
     }
   }
 
-  //image
+  Future<void> deleteProduct(String id) async {
+    try {
+      await remoteRepository.deleteProduct(id);
+      getProducts();
+    } catch (_) {
+      changeAppState(AppState.failed);
+      rethrow;
+    }
+  }
+
+  //crud image
   Future<void> uploadProductImage() async {
     try {
       _urlProductImage = await remoteRepository.uploadImage(
           File(_image!.path), 'files/$_imageName');
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> deleteImage(String url) async {
+    try {
+      await remoteRepository.deleteImage(url);
     } catch (_) {
       rethrow;
     }
@@ -72,6 +100,11 @@ class ProductViewModel extends ChangeNotifier {
     _image = null;
     _urlProductImage = '';
     _imageName = '';
+    notifyListeners();
+  }
+
+  Future<void> getUrlProductImage(String url) async {
+    _urlProductImage = url;
     notifyListeners();
   }
 
@@ -100,11 +133,13 @@ class ProductViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  //index change
   void changeIndexProductCategory(int index) {
     _indexProductCategory = index;
     notifyListeners();
   }
 
+  //appstate
   void changeAppState(AppState appState) {
     _appState = appState;
     notifyListeners();

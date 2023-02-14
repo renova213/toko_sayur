@@ -2,16 +2,32 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:toko_sayur/common/util/navigator_fade_helper.dart';
 import 'package:toko_sayur/model/product_model.dart';
+import 'package:toko_sayur/view/admin/botnavbar_admin.dart';
 import 'package:toko_sayur/view/widgets/button_widget.dart';
 import 'package:toko_sayur/view_model/product_view_model.dart';
 
 import '../../../common/style/style.dart';
 import '../../widgets/loading.dart';
+import 'update_product_screen.dart';
 
-class DetailAdminProductScreen extends StatelessWidget {
+class DetailAdminProductScreen extends StatefulWidget {
   final ProductModel product;
   const DetailAdminProductScreen({super.key, required this.product});
+
+  @override
+  State<DetailAdminProductScreen> createState() =>
+      _DetailAdminProductScreenState();
+}
+
+class _DetailAdminProductScreenState extends State<DetailAdminProductScreen> {
+  @override
+  void initState() {
+    super.initState();
+    Future.microtask(() => Provider.of<ProductViewModel>(context, listen: false)
+        .changeIndexProductCategory(0));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +43,7 @@ class DetailAdminProductScreen extends StatelessWidget {
                 width: double.maxFinite,
                 height: 250.h,
                 fit: BoxFit.fill,
-                imageUrl: product.productImage,
+                imageUrl: widget.product.productImage,
                 placeholder: (context, url) => const Loading(
                     width: double.maxFinite, height: 250, borderRadius: 0),
                 errorWidget: (context, url, error) => Image.asset(
@@ -36,12 +52,12 @@ class DetailAdminProductScreen extends StatelessWidget {
                     height: 250.h),
               ),
               SizedBox(height: 16.h),
-              Text(product.productName, style: AppFont.headline6),
+              Text(widget.product.productName, style: AppFont.headline6),
               SizedBox(height: 8.h),
               Text(
-                  product.productCategory.length == 1
-                      ? 'Rp. ${product.productCategory.first.price}'
-                      : 'Rp. ${product.productCategory.first.price} - ${product.productCategory.last.price}',
+                  widget.product.productCategory.length == 1
+                      ? 'Rp. ${widget.product.productCategory.first.price}'
+                      : 'Rp. ${widget.product.productCategory.first.price} - ${widget.product.productCategory.last.price}',
                   style:
                       AppFont.subtitle.copyWith(color: AppColor.secondaryColor),
                   overflow: TextOverflow.ellipsis,
@@ -49,7 +65,8 @@ class DetailAdminProductScreen extends StatelessWidget {
               SizedBox(height: 16.h),
               Text('Deskripsi', style: AppFont.subtitle),
               SizedBox(height: 8.h),
-              Text(product.productDescription, style: AppFont.mediumText),
+              Text(widget.product.productDescription,
+                  style: AppFont.mediumText),
               SizedBox(height: 16.h),
               _productReview(),
               SizedBox(height: 24.h),
@@ -152,7 +169,7 @@ class DetailAdminProductScreen extends StatelessWidget {
                   width: 55.w,
                   height: 55.h,
                   fit: BoxFit.fill,
-                  imageUrl: product.productImage,
+                  imageUrl: widget.product.productImage,
                   placeholder: (context, url) =>
                       const Loading(width: 55, height: 55, borderRadius: 0),
                   errorWidget: (context, url, error) => Image.asset(
@@ -165,11 +182,11 @@ class DetailAdminProductScreen extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
-                        'Rp. ${product.productCategory[notifier.indexProductCategory].price}',
+                        'Rp. ${widget.product.productCategory[notifier.indexProductCategory].price}',
                         style: AppFont.mediumText),
                     SizedBox(height: 8.h),
                     Text(
-                        'Stock: ${product.productCategory[notifier.indexProductCategory].stock}',
+                        'Stock: ${widget.product.productCategory[notifier.indexProductCategory].stock}',
                         style: AppFont.mediumText),
                   ],
                 ),
@@ -192,9 +209,9 @@ class DetailAdminProductScreen extends StatelessWidget {
             crossAxisSpacing: 25,
             crossAxisCount: 3,
             childAspectRatio: 2 / 1),
-        itemCount: product.productCategory.length,
+        itemCount: widget.product.productCategory.length,
         itemBuilder: (context, index) {
-          final data = product.productCategory[index];
+          final data = widget.product.productCategory[index];
           return GestureDetector(
             onTap: () {
               notifier.changeIndexProductCategory(index);
@@ -223,22 +240,69 @@ class DetailAdminProductScreen extends StatelessWidget {
           Expanded(
             flex: 1,
             child: ButtonWidget(
-                height: 45,
-                width: double.maxFinite,
-                text: 'Edit Product',
-                onTap: () {}),
+              height: 45,
+              width: double.maxFinite,
+              text: 'Edit Product',
+              onTap: () {
+                Navigator.of(context).push(
+                  NavigatorFadeHelper(
+                    child: UpdateProductScreen(product: widget.product),
+                  ),
+                );
+              },
+            ),
           ),
           SizedBox(width: 16.w),
           Expanded(
             flex: 1,
             child: ButtonWidget(
-                height: 45,
-                width: double.maxFinite,
-                text: 'Delete Product',
-                onTap: () {}),
+              height: 45,
+              width: double.maxFinite,
+              text: 'Delete Product',
+              onTap: () {
+                _delete(widget.product.id!);
+              },
+            ),
           ),
         ],
       ),
+    );
+  }
+
+  void _delete(String id) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text("Delete This?"),
+          content: SingleChildScrollView(
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                Consumer<ProductViewModel>(
+                  builder: (context, notifier, _) => TextButton(
+                    onPressed: () async {
+                      await notifier.deleteProduct(id).then(
+                            (_) => Navigator.of(context).pushAndRemoveUntil(
+                                NavigatorFadeHelper(
+                                    child: const BotNavBarAdmin()),
+                                (route) => false),
+                          );
+                    },
+                    child: const Text("Yes"),
+                  ),
+                ),
+                TextButton(
+                  onPressed: () async {
+                    Navigator.pop(context);
+                  },
+                  child: const Text("No"),
+                )
+              ],
+            ),
+          ),
+        );
+      },
     );
   }
 }

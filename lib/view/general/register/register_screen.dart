@@ -10,7 +10,7 @@ import 'package:toko_sayur/view/widgets/custom_field.dart';
 import 'package:toko_sayur/view_model/register_view_model.dart';
 import 'package:toko_sayur/view_model/user_view_model.dart';
 
-import '../../common/style/style.dart';
+import '../../../common/style/style.dart';
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
