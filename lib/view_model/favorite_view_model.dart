@@ -43,6 +43,13 @@ class FavoriteViewModel extends ChangeNotifier {
     }
   }
 
+  bool checkProductFavorite(String productId) {
+    final contains =
+        favoriteProducts.where((e) => e.productId == productId).toList();
+
+    return contains.isNotEmpty;
+  }
+
   void changeAppState(AppState appState) {
     _appState = appState;
     notifyListeners();

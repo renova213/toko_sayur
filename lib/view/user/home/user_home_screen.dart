@@ -77,19 +77,27 @@ class UserHomeScreen extends StatelessWidget {
                                         builder: (context, user, _) =>
                                             IconButton(
                                           onPressed: () async {
-                                            try {
-                                              await favorite
-                                                  .addFavoriteProduct(
-                                                      FavoriteModel(
-                                                          productId: data.id!),
-                                                      user.user.id!)
-                                                  .then((_) =>
-                                                      Fluttertoast.showToast(
-                                                          msg:
-                                                              'Added to cart'));
-                                            } catch (e) {
+                                            if (favorite.checkProductFavorite(
+                                                data.id!)) {
                                               Fluttertoast.showToast(
-                                                  msg: e.toString());
+                                                  msg:
+                                                      'Already added in favorite');
+                                            } else {
+                                              try {
+                                                await favorite
+                                                    .addFavoriteProduct(
+                                                        FavoriteModel(
+                                                            productId:
+                                                                data.id!),
+                                                        user.user.id!)
+                                                    .then((_) =>
+                                                        Fluttertoast.showToast(
+                                                            msg:
+                                                                'Added to cart'));
+                                              } catch (e) {
+                                                Fluttertoast.showToast(
+                                                    msg: e.toString());
+                                              }
                                             }
                                           },
                                           icon: const Icon(Icons.star,
