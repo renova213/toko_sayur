@@ -41,9 +41,17 @@ class RemoteRepository {
 
   Future<UserModel> getUser(String id) async {
     try {
-      return await service
-          .getDocumentByID('user', id)
-          .then((e) => UserModel.fromMap(e.data()!));
+      return await service.getDocumentByID('user', id).then(
+            (e) => UserModel.fromDoc(e),
+          );
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<void> updateUser(UserModel user, String id) async {
+    try {
+      await service.updateDocument('user', user.toJson(), id);
     } catch (_) {
       rethrow;
     }

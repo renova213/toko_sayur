@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:toko_sayur/common/util/enum_state.dart';
+import 'package:toko_sayur/model/user_model.dart';
 
 import '../../../common/style/style.dart';
 import '../../../common/util/navigator_fade_helper.dart';
@@ -50,47 +52,64 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   child: Stack(
                     children: [
                       Consumer<ProductViewModel>(
-                        builder: (context, notifier, _) => ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: notifier.urlProductImage == null ||
-                                  notifier.urlProductImage!.isEmpty
-                              ? Image.asset(
-                                  'assets/images/placeholder_image.jpg',
-                                  width: 130.w,
-                                  height: 130.w,
-                                  fit: BoxFit.fill)
-                              : CachedNetworkImage(
-                                  width: 130.w,
-                                  height: 130.w,
-                                  fit: BoxFit.fill,
-                                  imageUrl: notifier.urlProductImage!,
-                                  placeholder: (context, url) => const Loading(
-                                      width: 130,
-                                      height: 155,
-                                      borderRadius: 100),
-                                  errorWidget: (context, url, error) =>
-                                      Image.asset('placeholder_image',
-                                          width: 130.w, height: 130.w),
-                                ),
-                        ),
+                        builder: (context, notifier, _) => notifier.appState ==
+                                AppState.loaded
+                            ? ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: notifier.urlProductImage == null ||
+                                        notifier.urlProductImage!.isEmpty
+                                    ? Image.asset(
+                                        'assets/images/placeholder_image.jpg',
+                                        width: 130.w,
+                                        height: 130.w,
+                                        fit: BoxFit.fill)
+                                    : CachedNetworkImage(
+                                        width: 130.w,
+                                        height: 130.w,
+                                        fit: BoxFit.fill,
+                                        imageUrl: notifier.urlProductImage!,
+                                        placeholder: (context, url) =>
+                                            const Loading(
+                                                width: 130,
+                                                height: 155,
+                                                borderRadius: 100),
+                                        errorWidget: (context, url, error) =>
+                                            Image.asset('placeholder_image',
+                                                width: 130.w, height: 130.w),
+                                      ),
+                              )
+                            : const Loading(
+                                width: 130, height: 155, borderRadius: 100),
                       ),
                       Positioned(
                         top: 100.h,
                         left: 90.w,
-                        child: Consumer<ProductViewModel>(
-                          builder: (context, notifier, _) => GestureDetector(
-                            onTap: () {
-                              notifier.getImage();
-                            },
-                            child: Container(
-                              height: 40.w,
-                              width: 40.w,
-                              decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(100),
-                                  color: AppColor.secondaryColor),
-                              alignment: Alignment.center,
-                              child: const Icon(Icons.camera_alt,
-                                  color: Colors.white),
+                        child: Consumer<UserViewModel>(
+                          builder: (context, user, _) =>
+                              Consumer<ProductViewModel>(
+                            builder: (context, product, _) => GestureDetector(
+                              onTap: () async {
+                                await product.getImage();
+                                await product.uploadProductImage();
+                                await user.updateUser(
+                                    UserModel(
+                                        fullName: user.user.fullName,
+                                        email: user.user.email,
+                                        address: user.user.address,
+                                        image: product.urlProductImage),
+                                    user.user.id!);
+                                product.getUrlProductImage(user.user.image!);
+                              },
+                              child: Container(
+                                height: 40.w,
+                                width: 40.w,
+                                decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(100),
+                                    color: AppColor.secondaryColor),
+                                alignment: Alignment.center,
+                                child: const Icon(Icons.camera_alt,
+                                    color: Colors.white),
+                              ),
                             ),
                           ),
                         ),

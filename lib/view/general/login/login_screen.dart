@@ -6,7 +6,7 @@ import 'package:toko_sayur/common/util/navigator_fade_helper.dart';
 import 'package:toko_sayur/model/login_model.dart';
 import 'package:toko_sayur/view/admin/botnavbar_admin.dart';
 import 'package:toko_sayur/view/general/forgot_password/forgot_password_screen.dart';
-import 'package:toko_sayur/view/user/home/user_home_screen.dart';
+import 'package:toko_sayur/view/user/botnavbar_user.dart';
 import 'package:toko_sayur/view/widgets/button_widget.dart';
 import 'package:toko_sayur/view/widgets/custom_field.dart';
 import 'package:toko_sayur/view/widgets/disable_field.dart';
@@ -107,7 +107,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   return Navigator.of(context)
                                       .pushAndRemoveUntil(
                                           NavigatorFadeHelper(
-                                            child: const UserHomeScreen(),
+                                            child: const BotNavBarUser(),
                                           ),
                                           (route) => false);
                                 }
