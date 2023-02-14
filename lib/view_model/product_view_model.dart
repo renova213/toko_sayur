@@ -3,12 +3,15 @@ import 'dart:io';
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:toko_sayur/data/repository/admin_remote_repository.dart';
+import 'package:toko_sayur/data/repository/remote_repository.dart';
 import 'package:toko_sayur/model/product_model.dart';
 
 import '../common/util/enum_state.dart';
 
 class ProductViewModel extends ChangeNotifier {
   final AdminRemoteRepository remoteRepository = AdminRemoteRepository();
+  final RemoteRepository repository = RemoteRepository();
+
   AppState _appState = AppState.loading;
   List<ProductModel> _products = [];
   List<ProductCategoryModel> _temporaryCategoryProducts = [];
@@ -31,7 +34,7 @@ class ProductViewModel extends ChangeNotifier {
   Future<void> getProducts() async {
     try {
       changeAppState(AppState.loading);
-      _products = await remoteRepository.getProducts();
+      _products = await repository.getProducts();
       changeAppState(AppState.loaded);
     } catch (_) {
       changeAppState(AppState.failed);
@@ -134,7 +137,7 @@ class ProductViewModel extends ChangeNotifier {
   }
 
   //index change
-  void changeIndexProductCategory(int index) {
+  Future<void> changeIndexProductCategory(int index) async {
     _indexProductCategory = index;
     notifyListeners();
   }

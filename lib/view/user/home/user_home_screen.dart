@@ -1,12 +1,18 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:toko_sayur/common/util/enum_state.dart';
+import 'package:toko_sayur/view_model/favorite_view_model.dart';
 import 'package:toko_sayur/view_model/product_view_model.dart';
+import 'package:toko_sayur/view_model/user_view_model.dart';
 
 import '../../../common/style/style.dart';
+import '../../../common/util/navigator_fade_helper.dart';
+import '../../../model/favorite_model.dart';
 import '../../widgets/loading.dart';
+import '../product/detail_product_screen.dart';
 
 class UserHomeScreen extends StatelessWidget {
   const UserHomeScreen({super.key});
@@ -31,11 +37,14 @@ class UserHomeScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final data = notifier.products[index];
                       return GestureDetector(
-                        // onTap: () => Navigator.of(context).push(
-                        //   NavigatorFadeHelper(
-                        //     child: DetailAdminProductScreen(product: data),
-                        //   ),
-                        // ),
+                        onTap: () {
+                          notifier.changeIndexProductCategory(0);
+                          Navigator.of(context).push(
+                            NavigatorFadeHelper(
+                              child: DetailProductScreen(product: data),
+                            ),
+                          );
+                        },
                         child: Container(
                           padding: EdgeInsets.all(12.r),
                           color: const Color(0xFFF5F5F5),
@@ -62,10 +71,31 @@ class UserHomeScreen extends StatelessWidget {
                                   Positioned(
                                     left: 100.w,
                                     bottom: 70.h,
-                                    child: IconButton(
-                                      onPressed: () {},
-                                      icon: const Icon(Icons.star,
-                                          color: Colors.orange),
+                                    child: Consumer<FavoriteViewModel>(
+                                      builder: (context, favorite, _) =>
+                                          Consumer<UserViewModel>(
+                                        builder: (context, user, _) =>
+                                            IconButton(
+                                          onPressed: () async {
+                                            try {
+                                              await favorite
+                                                  .addFavoriteProduct(
+                                                      FavoriteModel(
+                                                          productId: data.id!),
+                                                      user.user.id!)
+                                                  .then((_) =>
+                                                      Fluttertoast.showToast(
+                                                          msg:
+                                                              'Added to cart'));
+                                            } catch (e) {
+                                              Fluttertoast.showToast(
+                                                  msg: e.toString());
+                                            }
+                                          },
+                                          icon: const Icon(Icons.star,
+                                              color: Colors.orange),
+                                        ),
+                                      ),
                                     ),
                                   ),
                                 ],
@@ -92,7 +122,6 @@ class UserHomeScreen extends StatelessWidget {
                     },
                     itemCount: notifier.products.length);
               }
-
               return _loading();
             },
           ),

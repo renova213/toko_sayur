@@ -122,4 +122,39 @@ class DBService implements BaseService {
       rethrow;
     }
   }
+
+  @override
+  Future<QuerySnapshot<Map<String, dynamic>>> getSubCollectionByUserID(
+      String collectionName, String id) async {
+    try {
+      return await db.collection(collectionName).doc(id).collection(id).get();
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> addSubCollectionByUserID(
+      String collectionName, String id, Map<String, dynamic> data) async {
+    try {
+      await db.collection(collectionName).doc(id).collection(id).add(data);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  @override
+  Future<void> deleteSubCollectionByUserId(
+      String collection, String id, String userId) async {
+    try {
+      await db
+          .collection(collection)
+          .doc(userId)
+          .collection(userId)
+          .doc(id)
+          .delete();
+    } catch (_) {
+      rethrow;
+    }
+  }
 }

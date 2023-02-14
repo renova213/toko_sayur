@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:toko_sayur/view_model/cart_view_model.dart';
+import 'package:toko_sayur/view_model/favorite_view_model.dart';
 import 'package:toko_sayur/view_model/product_view_model.dart';
+import 'package:toko_sayur/view_model/user_view_model.dart';
 
 import '../../common/style/style.dart';
 import '../general/profile/profile_screen.dart';
+import 'favorite/favorite_screen.dart';
 import 'home/user_home_screen.dart';
 
 class BotNavBarUser extends StatefulWidget {
@@ -18,7 +22,7 @@ class _MyStatefulWidgetState extends State<BotNavBarUser> {
 
   final List<Widget> _widgetOptions = const <Widget>[
     UserHomeScreen(),
-    UserHomeScreen(),
+    FavoriteScreen(),
     UserHomeScreen(),
     UserHomeScreen(),
     ProfileScreen(),
@@ -35,7 +39,12 @@ class _MyStatefulWidgetState extends State<BotNavBarUser> {
     super.initState();
     Future.microtask(
       () {
+        final String userId =
+            Provider.of<UserViewModel>(context, listen: false).user.id!;
         Provider.of<ProductViewModel>(context, listen: false).getProducts();
+        Provider.of<CartViewModel>(context, listen: false).getCart(userId);
+        Provider.of<FavoriteViewModel>(context, listen: false)
+            .getFavoriteProducts(userId);
       },
     );
   }

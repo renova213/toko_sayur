@@ -42,11 +42,14 @@ class AdminHomeScreen extends StatelessWidget {
                     itemBuilder: (context, index) {
                       final data = notifier.products[index];
                       return GestureDetector(
-                        onTap: () => Navigator.of(context).push(
-                          NavigatorFadeHelper(
-                            child: DetailAdminProductScreen(product: data),
-                          ),
-                        ),
+                        onTap: () {
+                          notifier.changeIndexProductCategory(0);
+                          Navigator.of(context).push(
+                            NavigatorFadeHelper(
+                              child: DetailAdminProductScreen(product: data),
+                            ),
+                          );
+                        },
                         child: Container(
                           padding: EdgeInsets.all(12.r),
                           color: const Color(0xFFF5F5F5),

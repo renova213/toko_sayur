@@ -7,25 +7,7 @@ import '../network/db_service.dart';
 class AdminRemoteRepository {
   final DBService service = DBService();
 
-  Future<List<ProductModel>> getProducts() async {
-    try {
-      List<ProductModel> products = [];
-
-      await service.getDocument('product').then(
-        (value) {
-          for (var i in value.docs) {
-            products.add(
-              ProductModel.fromDoc(i),
-            );
-          }
-        },
-      );
-
-      return products;
-    } catch (_) {
-      rethrow;
-    }
-  }
+  //product
 
   Future<void> updateProduct(Map<String, dynamic> product, String id) async {
     try {
@@ -51,6 +33,7 @@ class AdminRemoteRepository {
     }
   }
 
+  //image
   Future<String> uploadImage(File file, String path) async {
     try {
       return await service.uploadImage(file, path);
