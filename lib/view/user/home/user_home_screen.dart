@@ -21,6 +21,23 @@ class UserHomeScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          centerTitle: true,
+          backgroundColor: AppColor.secondaryColor,
+          leading: const Icon(Icons.menu, color: AppColor.primaryColor),
+          actions: [
+            IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.search, color: AppColor.primaryColor),
+            ),
+          ],
+          title: Text(
+            'Market Place',
+            style:
+                AppFont.subtitle.copyWith(color: AppColor.secondaryTextColor),
+          ),
+        ),
         body: Padding(
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 24, bottom: 24).r,

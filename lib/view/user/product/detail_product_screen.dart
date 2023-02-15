@@ -10,8 +10,11 @@ import 'package:toko_sayur/view_model/product_view_model.dart';
 import 'package:toko_sayur/view_model/user_view_model.dart';
 
 import '../../../common/style/style.dart';
+import '../../../common/util/navigator_fade_helper.dart';
 import '../../../model/cart_model.dart';
+import '../../../model/checkout_model.dart';
 import '../../widgets/loading.dart';
+import '../checkout/chekcout_screen.dart';
 
 class DetailProductScreen extends StatefulWidget {
   final ProductModel product;
@@ -239,41 +242,50 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   width: double.maxFinite,
                   text: 'Add to Cart',
                   onTap: () async {
-                    if (cart.checkProductCart(
-                        widget.product.id!,
-                        widget
+                    if (int.parse(widget
                             .product
                             .productCategory[product.indexProductCategory]
-                            .categoryName)) {
-                      Fluttertoast.showToast(msg: 'Already in cart');
-                    } else {
-                      try {
-                        await cart
-                            .addProductCart(
-                                CartModel(
-                                    prdocutId: widget.product.id!,
-                                    productName: widget.product.productName,
-                                    productImage: widget.product.productImage,
-                                    productDescription:
-                                        widget.product.productDescription,
-                                    categoryProductName: widget
-                                        .product
-                                        .productCategory[
-                                            product.indexProductCategory]
-                                        .categoryName,
-                                    price: widget
-                                        .product
-                                        .productCategory[
-                                            product.indexProductCategory]
-                                        .price),
-                                user.user.id!)
-                            .then(
-                              (_) =>
-                                  Fluttertoast.showToast(msg: 'Added to cart'),
-                            );
-                      } catch (e) {
-                        Fluttertoast.showToast(msg: e.toString());
+                            .stock) >
+                        0) {
+                      if (cart.checkProductCart(
+                          widget.product.id!,
+                          widget
+                              .product
+                              .productCategory[product.indexProductCategory]
+                              .categoryName)) {
+                        Fluttertoast.showToast(msg: 'Already in cart');
+                      } else {
+                        try {
+                          await cart
+                              .addProductCart(
+                                  CartModel(
+                                      productId: widget.product.id!,
+                                      quantityProduct: 1,
+                                      productName: widget.product.productName,
+                                      productImage: widget.product.productImage,
+                                      productDescription:
+                                          widget.product.productDescription,
+                                      categoryProductName: widget
+                                          .product
+                                          .productCategory[
+                                              product.indexProductCategory]
+                                          .categoryName,
+                                      price: widget
+                                          .product
+                                          .productCategory[
+                                              product.indexProductCategory]
+                                          .price),
+                                  user.user.id!)
+                              .then(
+                                (_) => Fluttertoast.showToast(
+                                    msg: 'Added to cart'),
+                              );
+                        } catch (e) {
+                          Fluttertoast.showToast(msg: e.toString());
+                        }
                       }
+                    } else {
+                      Fluttertoast.showToast(msg: 'Stock Empty');
                     }
                   },
                 ),
@@ -285,7 +297,41 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                   height: 45,
                   width: double.maxFinite,
                   text: 'Checkout',
-                  onTap: () {},
+                  onTap: () {
+                    if (int.parse(widget
+                            .product
+                            .productCategory[product.indexProductCategory]
+                            .stock) >
+                        0) {
+                      Navigator.of(context).push(
+                        NavigatorFadeHelper(
+                          child: CheckoutScreen(
+                            products: [
+                              CheckoutProductModel(
+                                  productId: widget.product.id!,
+                                  quantityProduct: 1,
+                                  productName: widget.product.productName,
+                                  productImage: widget.product.productImage,
+                                  productDescription:
+                                      widget.product.productDescription,
+                                  categoryProductName: widget
+                                      .product
+                                      .productCategory[
+                                          product.indexProductCategory]
+                                      .categoryName,
+                                  price: widget
+                                      .product
+                                      .productCategory[
+                                          product.indexProductCategory]
+                                      .price)
+                            ],
+                          ),
+                        ),
+                      );
+                    } else {
+                      Fluttertoast.showToast(msg: 'Stock Empty');
+                    }
+                  },
                 ),
               ),
             ],

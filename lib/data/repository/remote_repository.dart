@@ -7,6 +7,7 @@ import 'package:toko_sayur/model/register_model.dart';
 import 'package:toko_sayur/model/user_model.dart';
 
 import '../../model/cart_model.dart';
+import '../../model/checkout_model.dart';
 import '../../model/product_model.dart';
 
 class RemoteRepository {
@@ -175,6 +176,15 @@ class RemoteRepository {
   Future<void> deleteFavoriteProduct(String id, String userId) async {
     try {
       service.deleteSubCollectionByUserId('favorite', id, userId);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  //checkout
+  Future<void> addCheckoutProduct(CheckoutModel checkout, String userId) async {
+    try {
+      service.addSubCollectionByUserID('checkout', userId, checkout.toJson());
     } catch (_) {
       rethrow;
     }

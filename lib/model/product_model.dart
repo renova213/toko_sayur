@@ -40,7 +40,7 @@ class ProductModel {
 class ProductCategoryModel {
   final String categoryName;
   final String price;
-  final String stock;
+  String stock;
 
   ProductCategoryModel(
       {required this.categoryName, required this.price, required this.stock});

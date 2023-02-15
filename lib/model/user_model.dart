@@ -5,6 +5,7 @@ class UserModel {
   final String fullName;
   final String email;
   final String address;
+  final String phone;
   String? role;
   String? image;
 
@@ -13,6 +14,7 @@ class UserModel {
       required this.fullName,
       required this.email,
       required this.address,
+      required this.phone,
       this.role,
       this.image});
 
@@ -20,6 +22,7 @@ class UserModel {
       id: doc.id,
       fullName: (doc.data() as Map)['fullName'],
       email: (doc.data() as Map)['email'],
+      phone: (doc.data() as Map)['phone'],
       address: (doc.data() as Map)['address'],
       role: (doc.data() as Map)['role'],
       image: (doc.data() as Map)['image'] ?? '');
@@ -28,6 +31,7 @@ class UserModel {
         'fullName': fullName,
         'email': email,
         'address': address,
+        'phone': phone,
         'image': image ?? '',
         'role': 'user'
       };

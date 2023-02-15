@@ -2,7 +2,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class CartModel {
   String? id;
-  final String prdocutId;
+  int quantityProduct;
+  final String productId;
   final String productName;
   final String productImage;
   final String productDescription;
@@ -11,7 +12,8 @@ class CartModel {
 
   CartModel(
       {this.id,
-      required this.prdocutId,
+      required this.quantityProduct,
+      required this.productId,
       required this.productName,
       required this.productImage,
       required this.productDescription,
@@ -20,7 +22,8 @@ class CartModel {
 
   factory CartModel.fromDoc(DocumentSnapshot doc) => CartModel(
       id: doc.id,
-      prdocutId: (doc.data() as Map)['prdocutId'],
+      quantityProduct: (doc.data() as Map)['quantityProduct'],
+      productId: (doc.data() as Map)['productId'],
       productName: (doc.data() as Map)['productName'],
       productDescription: (doc.data() as Map)['productDescription'],
       productImage: (doc.data() as Map)['productImage'],
@@ -29,7 +32,8 @@ class CartModel {
 
   Map<String, dynamic> toJson() => {
         'productName': productName,
-        'prdocutId': prdocutId,
+        'quantityProduct': quantityProduct,
+        'productId': productId,
         'productImage': productImage,
         'productDescription': productDescription,
         'price': price,

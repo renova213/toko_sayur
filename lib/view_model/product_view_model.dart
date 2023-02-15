@@ -7,6 +7,7 @@ import 'package:toko_sayur/data/repository/remote_repository.dart';
 import 'package:toko_sayur/model/product_model.dart';
 
 import '../common/util/enum_state.dart';
+import '../model/checkout_model.dart';
 
 class ProductViewModel extends ChangeNotifier {
   final AdminRemoteRepository remoteRepository = AdminRemoteRepository();
@@ -45,7 +46,7 @@ class ProductViewModel extends ChangeNotifier {
   Future<void> updateProduct(Map<String, dynamic> product, String id) async {
     try {
       await remoteRepository.updateProduct(product, id);
-      getProducts();
+      await getProducts();
     } catch (_) {
       rethrow;
     }
@@ -139,6 +140,39 @@ class ProductViewModel extends ChangeNotifier {
   //index change
   Future<void> changeIndexProductCategory(int index) async {
     _indexProductCategory = index;
+    notifyListeners();
+  }
+
+  //stock
+  Future<void> updateStock(CheckoutModel checkout) async {
+    List<ProductModel> products = [];
+
+    for (var i in checkout.products) {
+      products += _products
+          .where((e) =>
+              e.id == i.productId &&
+              e.productCategory
+                  .where((e) => e.categoryName == i.categoryProductName)
+                  .isNotEmpty)
+          .toList();
+    }
+
+    for (var i in checkout.products) {
+      for (var j in products) {
+        if (i.productId == j.id) {
+          for (var k in j.productCategory) {
+            if (k.categoryName == i.categoryProductName) {
+              k.stock = (int.parse(k.stock) - i.quantityProduct).toString();
+            }
+          }
+        }
+      }
+    }
+
+    for (var i in products) {
+      updateProduct(i.toJson(), i.id!);
+    }
+
     notifyListeners();
   }
 

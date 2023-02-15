@@ -21,6 +21,12 @@ class FavoriteScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
+        appBar: AppBar(
+            title: Text('My Favorite', style: AppFont.subtitle),
+            leading: null,
+            centerTitle: true,
+            elevation: 0,
+            backgroundColor: Colors.white),
         body: Padding(
           padding:
               const EdgeInsets.only(left: 20, right: 20, top: 24, bottom: 24).r,

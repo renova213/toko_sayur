@@ -5,6 +5,7 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:toko_sayur/model/register_model.dart';
 import 'package:toko_sayur/model/user_model.dart';
+import 'package:toko_sayur/view/admin/product/widgets/field_product.dart';
 import 'package:toko_sayur/view/widgets/button_widget.dart';
 import 'package:toko_sayur/view/widgets/custom_field.dart';
 import 'package:toko_sayur/view_model/register_view_model.dart';
@@ -24,6 +25,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _phoneController = TextEditingController();
 
   @override
   void dispose() {
@@ -32,6 +34,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
     _addressController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _phoneController.dispose();
   }
 
   @override
@@ -74,12 +77,18 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                 msg: 'Minimum password 8 characters');
                           }
 
+                          if (_phoneController.text.length < 10) {
+                            return Fluttertoast.showToast(
+                                msg: 'Use valid number');
+                          }
+
                           try {
                             await register
                                 .register(
                                   RegisterModel(
                                       fullName: _fullNameController.text,
                                       email: _emailController.text,
+                                      phone: _phoneController.text,
                                       address: _addressController.text,
                                       password: _passwordController.text),
                                 )
@@ -87,6 +96,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                                   (_) async => await user.addUser(
                                       UserModel(
                                           fullName: _fullNameController.text,
+                                          phone: _phoneController.text,
                                           email: _emailController.text,
                                           address: _addressController.text),
                                       _emailController.text),
@@ -156,6 +166,14 @@ class _RegisterScreenState extends State<RegisterScreen> {
           controller: _addressController,
           hintText: 'Address',
           obscureText: false,
+        ),
+        SizedBox(height: 16.h),
+        FieldProduct(
+          height: 55,
+          width: double.maxFinite,
+          onlyNumber: true,
+          controller: _phoneController,
+          hintText: 'Address',
         ),
         SizedBox(height: 16.h),
         CustomField(

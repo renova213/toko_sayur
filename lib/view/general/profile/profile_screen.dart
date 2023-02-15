@@ -95,6 +95,7 @@ class _ProfileScreenState extends State<ProfileScreen> {
                                     UserModel(
                                         fullName: user.user.fullName,
                                         email: user.user.email,
+                                        phone: user.user.phone,
                                         address: user.user.address,
                                         image: product.urlProductImage),
                                     user.user.id!);
@@ -167,6 +168,8 @@ class _ProfileScreenState extends State<ProfileScreen> {
           _detailProfileItem('Address', notifier.user.address),
           SizedBox(height: 16.h),
           _detailProfileItem('Email', notifier.user.email),
+          SizedBox(height: 16.h),
+          _detailProfileItem('Phone', notifier.user.phone),
         ],
       ),
     );

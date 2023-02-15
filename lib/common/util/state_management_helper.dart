@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
+import 'package:toko_sayur/view_model/checkout_view_model.dart';
 import 'package:toko_sayur/view_model/favorite_view_model.dart';
 import 'package:toko_sayur/view_model/forgot_password_view_model.dart';
 import 'package:toko_sayur/view_model/login_view_model.dart';
@@ -20,6 +21,7 @@ class StateManagementHelper {
         ChangeNotifierProvider(create: (_) => ProductViewModel()),
         ChangeNotifierProvider(create: (_) => CartViewModel()),
         ChangeNotifierProvider(create: (_) => FavoriteViewModel()),
+        ChangeNotifierProvider(create: (_) => CheckoutViewModel()),
       ],
       child: widget,
     );

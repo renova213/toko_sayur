@@ -7,6 +7,7 @@ import 'package:toko_sayur/view_model/user_view_model.dart';
 
 import '../../common/style/style.dart';
 import '../general/profile/profile_screen.dart';
+import 'cart/cart_screen.dart';
 import 'favorite/favorite_screen.dart';
 import 'home/user_home_screen.dart';
 
@@ -23,7 +24,7 @@ class _MyStatefulWidgetState extends State<BotNavBarUser> {
   final List<Widget> _widgetOptions = const <Widget>[
     UserHomeScreen(),
     FavoriteScreen(),
-    UserHomeScreen(),
+    CartScreen(),
     UserHomeScreen(),
     ProfileScreen(),
   ];
@@ -52,22 +53,6 @@ class _MyStatefulWidgetState extends State<BotNavBarUser> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        centerTitle: true,
-        backgroundColor: AppColor.secondaryColor,
-        leading: const Icon(Icons.menu, color: AppColor.primaryColor),
-        actions: [
-          IconButton(
-            onPressed: () {},
-            icon: const Icon(Icons.search, color: AppColor.primaryColor),
-          ),
-        ],
-        title: Text(
-          'Market Place',
-          style: AppFont.subtitle.copyWith(color: AppColor.secondaryTextColor),
-        ),
-      ),
       body: Center(
         child: _widgetOptions.elementAt(_selectedIndex),
       ),
