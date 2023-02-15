@@ -2,7 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:toko_sayur/view/widgets/button_widget.dart';
 import 'package:toko_sayur/view_model/cart_view_model.dart';
+import 'package:toko_sayur/view_model/user_view_model.dart';
 
 import '../../../common/style/style.dart';
 import '../../../view_model/product_view_model.dart';
@@ -20,8 +22,12 @@ class _CartScreenState extends State<CartScreen> {
   void initState() {
     super.initState();
     Future.microtask(
-      () => Provider.of<CartViewModel>(context, listen: false)
-          .clearTemporaryProductCart(),
+      () {
+        final user = Provider.of<UserViewModel>(context, listen: false).user;
+        Provider.of<CartViewModel>(context, listen: false)
+            .clearTemporaryProductCart();
+        Provider.of<CartViewModel>(context, listen: false).getCart(user.id!);
+      },
     );
   }
 
@@ -42,9 +48,64 @@ class _CartScreenState extends State<CartScreen> {
             children: [
               _listCart(),
               SizedBox(height: 40.h),
-              Row(
-                children: [],
-              ),
+              Consumer<CartViewModel>(builder: (context, cart, _) {
+                int totalPrice = 0;
+
+                for (var i in cart.temporaryProductCarts) {
+                  totalPrice += int.parse(i.price) * i.quantityProduct;
+                }
+
+                return Row(
+                  children: [
+                    Expanded(
+                      flex: 1,
+                      child: Container(
+                        color: const Color(0xFFF1F1F1),
+                        padding: EdgeInsets.all(8.r),
+                        child: Row(
+                          children: [
+                            GestureDetector(
+                              onTap: () {
+                                if (cart.checkSelectAllCart()) {
+                                  cart.selectAllCart();
+                                } else {
+                                  cart.clearTemporaryProductCart();
+                                }
+                              },
+                              child: Container(
+                                width: 25.w,
+                                height: 25.w,
+                                alignment: Alignment.center,
+                                color: const Color(0xFFD9D9D9),
+                                child: cart.checkSelectAllCart()
+                                    ? null
+                                    : const Icon(Icons.check),
+                              ),
+                            ),
+                            SizedBox(width: 8.w),
+                            Text('Semua', style: AppFont.smallText),
+                            SizedBox(width: 8.w),
+                            Text(
+                              'Rp. $totalPrice',
+                              style: AppFont.smallText
+                                  .copyWith(color: AppColor.thirdTextColor),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: ButtonWidget(
+                        height: 35,
+                        width: 0,
+                        text: 'Checkout',
+                        onTap: () {},
+                      ),
+                    ),
+                  ],
+                );
+              }),
             ],
           ),
         ),

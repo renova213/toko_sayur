@@ -65,16 +65,29 @@ class CartViewModel extends ChangeNotifier {
     return contains.isEmpty;
   }
 
+  Future<void> selectAllCart() async {
+    for (var i in _productCarts) {
+      if (!_temporaryProductCarts.contains(i)) {
+        _temporaryProductCarts.add(i);
+      }
+    }
+    notifyListeners();
+  }
+
+  bool checkSelectAllCart() {
+    return _temporaryProductCarts.length != _productCarts.length;
+  }
+
   Future<void> clearTemporaryProductCart() async {
     _temporaryProductCarts.clear();
     notifyListeners();
   }
 
+  //changeQuantity
   void addQuantityProduct(List<ProductModel> products, CartModel cart) {
     int stock = 0;
 
     for (var i in products) {
-      stock = 1;
       if (i.id == cart.productId) {
         for (var j in i.productCategory) {
           if (j.categoryName == cart.categoryProductName) {
