@@ -1,10 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:toko_sayur/model/review_model.dart';
 
 class ProductModel {
   final String? id;
   final String productName;
   final String productImage;
   final String productDescription;
+  final List<ReviewModel> reviews;
   final List<ProductCategoryModel> productCategory;
 
   ProductModel(
@@ -12,7 +14,8 @@ class ProductModel {
       required this.productName,
       required this.productImage,
       required this.productDescription,
-      required this.productCategory});
+      required this.productCategory,
+      required this.reviews});
 
   factory ProductModel.fromDoc(DocumentSnapshot doc) => ProductModel(
       id: doc.id,
@@ -21,19 +24,26 @@ class ProductModel {
       productImage: (doc.data() as Map)['productImage'],
       productCategory: ((doc.data() as Map)['productCategory'] as List)
           .map((e) => ProductCategoryModel.fromMap(e))
-          .toList());
+          .toList(),
+      reviews: (doc.data() as Map)['reviews'] != null
+          ? ((doc.data() as Map)['reviews'] as List)
+              .map((e) => ReviewModel.fromMap(e))
+              .toList()
+          : []);
 
   Map<String, dynamic> toJson() => {
         'productName': productName,
         'productImage': productImage,
         'productDescription': productDescription,
-        'productCategory': productCategory
-            .map((e) => ProductCategoryModel(
-                    categoryName: e.categoryName,
-                    price: e.price,
-                    stock: e.stock)
-                .toJson())
-            .toList()
+        'productCategory': productCategory.map((e) => ProductCategoryModel(
+                categoryName: e.categoryName, price: e.price, stock: e.stock)
+            .toJson()),
+        'reviews': reviews.isEmpty
+            ? []
+            : reviews
+                .map(
+                    (e) => ReviewModel(review: e.review, user: e.user).toJson())
+                .toList()
       };
 }
 

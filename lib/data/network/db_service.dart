@@ -157,4 +157,19 @@ class DBService implements BaseService {
       rethrow;
     }
   }
+
+  @override
+  Future<void> updateSubCollectionByUserID(String collectionName, String id,
+      String userId, Map<String, dynamic> data) async {
+    try {
+      await db
+          .collection(collectionName)
+          .doc(userId)
+          .collection(userId)
+          .doc(id)
+          .update(data);
+    } catch (_) {
+      rethrow;
+    }
+  }
 }

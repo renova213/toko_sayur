@@ -181,6 +181,38 @@ class ProductViewModel extends ChangeNotifier {
     notifyListeners();
   }
 
+  Future<void> updateFailedCheckoutStock(CheckoutModel checkout) async {
+    List<ProductModel> products = [];
+
+    for (var i in checkout.products) {
+      products += _products
+          .where((e) =>
+              e.id == i.productId &&
+              e.productCategory
+                  .where((e) => e.categoryName == i.categoryProductName)
+                  .isNotEmpty)
+          .toList();
+    }
+
+    for (var i in checkout.products) {
+      for (var j in products) {
+        if (i.productId == j.id) {
+          for (var k in j.productCategory) {
+            if (k.categoryName == i.categoryProductName) {
+              k.stock = (int.parse(k.stock) + i.quantityProduct).toString();
+            }
+          }
+        }
+      }
+    }
+
+    for (var i in products) {
+      updateProduct(i.toJson(), i.id!);
+    }
+
+    notifyListeners();
+  }
+
   //search product
   void searchProduct(String value) {
     if (value.isEmpty) {

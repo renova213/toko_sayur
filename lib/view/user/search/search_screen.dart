@@ -66,8 +66,8 @@ class _SearchScreenState extends State<SearchScreen> {
           builder: (context, product, _) => Consumer<UserViewModel>(
             builder: (context, user, _) => TextField(
               onSubmitted: (value) {
-                product.addRecentSearch(value, user.user.id!);
                 product.searchProduct(value);
+                product.addRecentSearch(value, user.user.id!);
               },
               controller: searchController,
               style: AppFont.largeText.copyWith(
@@ -206,6 +206,7 @@ class _SearchScreenState extends State<SearchScreen> {
                                       await favorite
                                           .addFavoriteProduct(
                                               FavoriteModel(
+                                                  reviews: data.reviews,
                                                   productId: data.id!),
                                               user.user.id!)
                                           .then((_) => Fluttertoast.showToast(

@@ -148,6 +148,7 @@ class RemoteRepository {
               FavoriteModel(
                 id: j.id,
                 productId: j.productId,
+                reviews: i.reviews,
                 productName: i.productName,
                 productImage: i.productImage,
                 productDescription: i.productDescription,
@@ -193,6 +194,25 @@ class RemoteRepository {
   Future<void> addCheckoutProduct(CheckoutModel checkout, String userId) async {
     try {
       service.addSubCollectionByUserID('checkout', userId, checkout.toJson());
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  Future<List<CheckoutModel>> getCheckoutProduct(String userId) async {
+    try {
+      List<CheckoutModel> checkouts = [];
+
+      await service.getSubCollectionByUserID('checkout', userId).then(
+        (value) {
+          for (var i in value.docs) {
+            checkouts.add(
+              CheckoutModel.fromDoc(i),
+            );
+          }
+        },
+      );
+      return checkouts;
     } catch (_) {
       rethrow;
     }

@@ -5,7 +5,7 @@ import 'package:toko_sayur/view_model/product_view_model.dart';
 import '../../common/style/style.dart';
 import '../general/profile/profile_screen.dart';
 import 'home/admin_home_screen.dart';
-import 'order/order_screen.dart';
+import 'order/order_admin_screen.dart';
 
 class BotNavBarAdmin extends StatefulWidget {
   const BotNavBarAdmin({super.key});
@@ -19,7 +19,7 @@ class _MyStatefulWidgetState extends State<BotNavBarAdmin> {
 
   final List<Widget> _widgetOptions = const <Widget>[
     AdminHomeScreen(),
-    OrderScreen(),
+    OrderAdminScreen(),
     ProfileScreen(),
   ];
 

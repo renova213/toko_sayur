@@ -50,6 +50,7 @@ class FavoriteScreen extends StatelessWidget {
                               NavigatorFadeHelper(
                                 child: DetailProductScreen(
                                   product: ProductModel(
+                                    reviews: data.reviews,
                                     id: data.productId,
                                     productName: data.productName!,
                                     productImage: data.productImage!,

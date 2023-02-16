@@ -27,6 +27,13 @@ class UserModel {
       role: (doc.data() as Map)['role'],
       image: (doc.data() as Map)['image'] ?? '');
 
+  factory UserModel.fromMap(Map<String, dynamic> map) => UserModel(
+        fullName: map['fullName'],
+        email: map['email'],
+        phone: map['phone'],
+        address: map['address'],
+      );
+
   Map<String, dynamic> toJson() => {
         'fullName': fullName,
         'email': email,

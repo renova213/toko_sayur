@@ -120,6 +120,7 @@ class _UpdateProductScreenState extends State<UpdateProductScreen> {
                           await notifier
                               .updateProduct(
                                   ProductModel(
+                                          reviews: widget.product.reviews,
                                           productName:
                                               _productNameController.text,
                                           productDescription:

@@ -1,8 +1,10 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:toko_sayur/model/review_model.dart';
 
 class FavoriteModel {
   final String? id;
   final String productId;
+  final List<ReviewModel> reviews;
   final String? productName;
   final String? productImage;
   final String? productDescription;
@@ -11,6 +13,7 @@ class FavoriteModel {
   FavoriteModel(
       {this.id,
       required this.productId,
+      required this.reviews,
       this.productName,
       this.productImage,
       this.productDescription,
@@ -25,6 +28,11 @@ class FavoriteModel {
       productCategory: (doc.data() as Map)['productCategory'] != null
           ? ((doc.data() as Map)['productCategory'] as List)
               .map((e) => FavoriteProductCategoryModel.fromMap(e))
+              .toList()
+          : [],
+      reviews: (doc.data() as Map)['reviews'] != null
+          ? ((doc.data() as Map)['reviews'] as List)
+              .map((e) => ReviewModel.fromMap(e))
               .toList()
           : []);
 

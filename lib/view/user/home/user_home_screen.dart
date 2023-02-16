@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:toko_sayur/common/util/enum_state.dart';
+import 'package:toko_sayur/view/user/notif/notification_screen.dart';
 import 'package:toko_sayur/view/user/search/search_screen.dart';
 import 'package:toko_sayur/view_model/favorite_view_model.dart';
 import 'package:toko_sayur/view_model/product_view_model.dart';
@@ -28,6 +29,17 @@ class UserHomeScreen extends StatelessWidget {
           backgroundColor: AppColor.secondaryColor,
           leading: const Icon(Icons.menu, color: AppColor.primaryColor),
           actions: [
+            IconButton(
+              onPressed: () {
+                Navigator.of(context).push(
+                  NavigatorFadeHelper(
+                    child: const NotifScreen(),
+                  ),
+                );
+              },
+              icon:
+                  const Icon(Icons.notifications, color: AppColor.primaryColor),
+            ),
             IconButton(
               onPressed: () {
                 Navigator.of(context).push(
@@ -111,6 +123,8 @@ class UserHomeScreen extends StatelessWidget {
                                                 await favorite
                                                     .addFavoriteProduct(
                                                         FavoriteModel(
+                                                            reviews:
+                                                                data.reviews,
                                                             productId:
                                                                 data.id!),
                                                         user.user.id!)

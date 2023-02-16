@@ -62,12 +62,16 @@ class CheckoutScreen extends StatelessWidget {
                           await checkout
                               .addCheckoutProduct(
                                   CheckoutModel(
-                                      statusOrder: 0, products: products),
+                                      user: user.user,
+                                      statusOrder: 0,
+                                      products: products),
                                   user.user.id!)
                               .then(
                                 (_) async => await product.updateStock(
                                   CheckoutModel(
-                                      statusOrder: 0, products: products),
+                                      user: user.user,
+                                      statusOrder: 0,
+                                      products: products),
                                 ),
                               )
                               .then(

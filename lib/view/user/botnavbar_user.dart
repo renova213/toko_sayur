@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:toko_sayur/view/general/profile/profile_screen.dart';
 import 'package:toko_sayur/view_model/cart_view_model.dart';
 import 'package:toko_sayur/view_model/favorite_view_model.dart';
 import 'package:toko_sayur/view_model/product_view_model.dart';
 import 'package:toko_sayur/view_model/user_view_model.dart';
 
 import '../../common/style/style.dart';
-import '../general/profile/profile_screen.dart';
 import 'cart/cart_screen.dart';
 import 'favorite/favorite_screen.dart';
 import 'home/user_home_screen.dart';
@@ -25,7 +25,6 @@ class _MyStatefulWidgetState extends State<BotNavBarUser> {
     UserHomeScreen(),
     FavoriteScreen(),
     CartScreen(),
-    UserHomeScreen(),
     ProfileScreen(),
   ];
 
@@ -67,8 +66,6 @@ class _MyStatefulWidgetState extends State<BotNavBarUser> {
               icon: Icon(Icons.star_outline), label: 'Favorite'),
           BottomNavigationBarItem(
               icon: Icon(Icons.shopping_cart), label: 'Cart'),
-          BottomNavigationBarItem(
-              icon: Icon(Icons.history), label: 'Transaction'),
           BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
         ],
         currentIndex: _selectedIndex,

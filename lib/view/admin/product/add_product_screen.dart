@@ -97,6 +97,7 @@ class _AddProductScreenState extends State<AddProductScreen> {
                               .then(
                                 (_) async => await notifier.addProduct(
                                   ProductModel(
+                                      reviews: [],
                                       productName: _productNameController.text,
                                       productDescription:
                                           _productDescriptionController.text,
