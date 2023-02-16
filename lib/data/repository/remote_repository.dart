@@ -115,6 +115,14 @@ class RemoteRepository {
     }
   }
 
+  Future<void> deleteProductCart(String id, String userId) async {
+    try {
+      service.deleteSubCollectionByUserId('cart', id, userId);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
   //favorite
   Future<List<FavoriteModel>> getFavoriteProducts(String userId) async {
     try {

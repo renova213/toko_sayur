@@ -36,6 +36,15 @@ class CartViewModel extends ChangeNotifier {
     }
   }
 
+  Future<void> deleteProductCart(String id, String userId) async {
+    try {
+      await remoteRepository.deleteProductCart(id, userId);
+      await getCart(id);
+    } catch (_) {
+      rethrow;
+    }
+  }
+
   bool checkProductCart(String productId, String categoryProductName) {
     final contains = productCarts
         .where((e) =>

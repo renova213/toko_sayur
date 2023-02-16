@@ -17,7 +17,9 @@ import 'widgets/modal_update_user_address.dart';
 
 class CheckoutScreen extends StatelessWidget {
   final List<CheckoutProductModel> products;
-  const CheckoutScreen({super.key, required this.products});
+  final Function function;
+  const CheckoutScreen(
+      {super.key, required this.products, required this.function});
 
   @override
   Widget build(BuildContext context) {
@@ -67,6 +69,9 @@ class CheckoutScreen extends StatelessWidget {
                                   CheckoutModel(
                                       statusOrder: 0, products: products),
                                 ),
+                              )
+                              .then(
+                                (_) async => await function(),
                               )
                               .then(
                                 (value) => Navigator.pushReplacement(
@@ -193,7 +198,10 @@ class CheckoutScreen extends StatelessWidget {
                         overflow: TextOverflow.ellipsis,
                         style: AppFont.subtitle),
                     SizedBox(height: 4.h),
-                    Text(data.categoryProductName,
+                    Text(
+                        data.quantityProduct == 1
+                            ? data.categoryProductName
+                            : '${data.categoryProductName} x ${data.quantityProduct}',
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: AppFont.mediumText),

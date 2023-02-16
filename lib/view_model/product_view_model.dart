@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:toko_sayur/data/repository/admin_remote_repository.dart';
 import 'package:toko_sayur/data/repository/remote_repository.dart';
 import 'package:toko_sayur/model/product_model.dart';
@@ -14,7 +15,9 @@ class ProductViewModel extends ChangeNotifier {
   final RemoteRepository repository = RemoteRepository();
 
   AppState _appState = AppState.loading;
+  final List<String> _recentSearch = [];
   List<ProductModel> _products = [];
+  List<ProductModel> _searchResult = [];
   List<ProductCategoryModel> _temporaryCategoryProducts = [];
   String? _urlProductImage;
   File? _image;
@@ -24,12 +27,14 @@ class ProductViewModel extends ChangeNotifier {
 
   AppState get appState => _appState;
   List<ProductModel> get products => _products;
+  List<ProductModel> get searchResult => _searchResult;
   List<ProductCategoryModel> get temporaryCategoryProducts =>
       _temporaryCategoryProducts;
   String? get urlProductImage => _urlProductImage;
   File? get image => _image;
   String? get imageName => _imageName;
   int get indexProductCategory => _indexProductCategory;
+  List<String> get recentSearch => _recentSearch;
 
   //crud product
   Future<void> getProducts() async {
@@ -172,6 +177,71 @@ class ProductViewModel extends ChangeNotifier {
     for (var i in products) {
       updateProduct(i.toJson(), i.id!);
     }
+
+    notifyListeners();
+  }
+
+  //search product
+  void searchProduct(String value) {
+    if (value.isEmpty) {
+      _searchResult.clear();
+    } else {
+      _searchResult = _products
+          .where(
+              (e) => e.productName.toLowerCase().contains(value.toLowerCase()))
+          .toList();
+    }
+    notifyListeners();
+  }
+
+  void saveRecentSearch(String userId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final search = prefs.getStringList('${userId}recentSearch');
+
+    if (search != null) {
+      for (var i = 0; i < search.length; i++) {
+        if (!_recentSearch.contains(search[i])) {
+          _recentSearch.add(search[i]);
+        }
+      }
+    }
+
+    notifyListeners();
+  }
+
+  void addRecentSearch(String value, String userId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    if (value.isNotEmpty && !_recentSearch.contains(value)) {
+      _recentSearch.add(value);
+
+      prefs.setStringList(
+        "${userId}recentSearch",
+        _recentSearch.map((e) => e).toList(),
+      );
+    }
+    notifyListeners();
+  }
+
+  void removeRecentSearch(int index, String userId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    _recentSearch.removeAt(index);
+
+    prefs.setStringList(
+      "${userId}recentSearch",
+      _recentSearch.map((e) => e).toList(),
+    );
+
+    notifyListeners();
+  }
+
+  void clearRecentSearch(String userId) async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    _recentSearch.clear();
+
+    prefs.remove("${userId}recentSearch");
 
     notifyListeners();
   }

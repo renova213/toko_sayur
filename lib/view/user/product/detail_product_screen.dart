@@ -306,6 +306,7 @@ class _DetailProductScreenState extends State<DetailProductScreen> {
                       Navigator.of(context).push(
                         NavigatorFadeHelper(
                           child: CheckoutScreen(
+                            function: () async {},
                             products: [
                               CheckoutProductModel(
                                   productId: widget.product.id!,

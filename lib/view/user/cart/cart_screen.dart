@@ -1,7 +1,11 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
+import 'package:toko_sayur/common/util/navigator_fade_helper.dart';
+import 'package:toko_sayur/model/checkout_model.dart';
+import 'package:toko_sayur/view/user/checkout/chekcout_screen.dart';
 import 'package:toko_sayur/view/widgets/button_widget.dart';
 import 'package:toko_sayur/view_model/cart_view_model.dart';
 import 'package:toko_sayur/view_model/user_view_model.dart';
@@ -96,11 +100,47 @@ class _CartScreenState extends State<CartScreen> {
                     ),
                     Expanded(
                       flex: 1,
-                      child: ButtonWidget(
-                        height: 35,
-                        width: 0,
-                        text: 'Checkout',
-                        onTap: () {},
+                      child: Consumer<UserViewModel>(
+                        builder: (context, user, _) => ButtonWidget(
+                          height: 35,
+                          width: 0,
+                          text: 'Checkout',
+                          onTap: () {
+                            if (cart.temporaryProductCarts.isEmpty) {
+                              return Fluttertoast.showToast(
+                                  msg: 'Select product before checkout');
+                            }
+                            Navigator.of(context).push(
+                              NavigatorFadeHelper(
+                                child: CheckoutScreen(
+                                  products: cart.temporaryProductCarts
+                                      .map(
+                                        (e) => CheckoutProductModel(
+                                          productId: e.productId,
+                                          quantityProduct: e.quantityProduct,
+                                          productName: e.productName,
+                                          productImage: e.productImage,
+                                          productDescription:
+                                              e.productDescription,
+                                          categoryProductName:
+                                              e.categoryProductName,
+                                          price: (int.parse(e.price) *
+                                                  e.quantityProduct)
+                                              .toString(),
+                                        ),
+                                      )
+                                      .toList(),
+                                  function: () async {
+                                    for (var i in cart.temporaryProductCarts) {
+                                      cart.deleteProductCart(
+                                          i.id!, user.user.id!);
+                                    }
+                                  },
+                                ),
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
                   ],

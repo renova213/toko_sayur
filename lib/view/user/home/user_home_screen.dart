@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:provider/provider.dart';
 import 'package:toko_sayur/common/util/enum_state.dart';
+import 'package:toko_sayur/view/user/search/search_screen.dart';
 import 'package:toko_sayur/view_model/favorite_view_model.dart';
 import 'package:toko_sayur/view_model/product_view_model.dart';
 import 'package:toko_sayur/view_model/user_view_model.dart';
@@ -28,7 +29,13 @@ class UserHomeScreen extends StatelessWidget {
           leading: const Icon(Icons.menu, color: AppColor.primaryColor),
           actions: [
             IconButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).push(
+                  NavigatorFadeHelper(
+                    child: const SearchScreen(),
+                  ),
+                );
+              },
               icon: const Icon(Icons.search, color: AppColor.primaryColor),
             ),
           ],
