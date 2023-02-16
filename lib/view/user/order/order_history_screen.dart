@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
+import 'package:toko_sayur/common/util/navigator_fade_helper.dart';
 import 'package:toko_sayur/view/widgets/button_widget.dart';
 import 'package:toko_sayur/view_model/checkout_view_model.dart';
 import 'package:toko_sayur/view_model/user_view_model.dart';
@@ -10,10 +11,13 @@ import '../../../common/style/style.dart';
 import '../../../model/checkout_model.dart';
 import '../../../view_model/admin_checkout_view_model.dart';
 import '../../widgets/loading.dart';
+import '../review/review_product_screen.dart';
 
 class OrderHistoryScreen extends StatelessWidget {
+  final int indexCheckout;
   final CheckoutModel checkout;
-  const OrderHistoryScreen({super.key, required this.checkout});
+  const OrderHistoryScreen(
+      {super.key, required this.checkout, required this.indexCheckout});
 
   @override
   Widget build(BuildContext context) {
@@ -99,7 +103,17 @@ class OrderHistoryScreen extends StatelessWidget {
                   const Spacer(),
                   checkout.statusOrder == 3
                       ? ButtonWidget(
-                          height: 35, width: 95, text: 'Nilai', onTap: () {})
+                          height: 35,
+                          width: 95,
+                          text: 'Nilai',
+                          onTap: () {
+                            Navigator.of(context).push(
+                              NavigatorFadeHelper(
+                                child: ReviewProductScreen(
+                                    indexCheckout: indexCheckout),
+                              ),
+                            );
+                          })
                       : const SizedBox(),
                 ],
               ),

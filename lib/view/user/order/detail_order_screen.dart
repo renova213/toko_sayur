@@ -7,8 +7,10 @@ import '../../../model/checkout_model.dart';
 import 'order_history_screen.dart';
 
 class DetailOrderScreen extends StatelessWidget {
+  final int indexCheckout;
   final CheckoutModel checkout;
-  const DetailOrderScreen({super.key, required this.checkout});
+  const DetailOrderScreen(
+      {super.key, required this.checkout, required this.indexCheckout});
 
   @override
   Widget build(BuildContext context) {
@@ -41,7 +43,8 @@ class DetailOrderScreen extends StatelessWidget {
                     onPressed: () {
                       Navigator.of(context).push(
                         NavigatorFadeHelper(
-                          child: OrderHistoryScreen(checkout: checkout),
+                          child: OrderHistoryScreen(
+                              checkout: checkout, indexCheckout: indexCheckout),
                         ),
                       );
                     },

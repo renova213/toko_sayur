@@ -23,7 +23,8 @@ class AdminRemoteRepository {
     try {
       await service.addDocument('product', product.toJson());
     } catch (_) {
-      throw 'Failed Add Product';
+      rethrow;
+      // throw 'Failed Add Product';
     }
   }
 

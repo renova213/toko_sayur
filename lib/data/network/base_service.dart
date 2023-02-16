@@ -13,6 +13,8 @@ abstract class BaseService {
       String collectionName, String id, Map<String, dynamic> data);
   Future<void> updateSubCollectionByUserID(String collectionName, String id,
       String userId, Map<String, dynamic> data);
+  Future<void> setDocument(
+      String collectionName, String id, Map<String, dynamic> data);
   Future updateDocument(
       String collectionName, Map<String, dynamic> data, String id);
   Future deleteDocument(String collectionName, String id);

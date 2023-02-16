@@ -20,15 +20,16 @@ class UserModel {
 
   factory UserModel.fromDoc(DocumentSnapshot doc) => UserModel(
       id: doc.id,
-      fullName: (doc.data() as Map)['fullName'],
-      email: (doc.data() as Map)['email'],
-      phone: (doc.data() as Map)['phone'],
-      address: (doc.data() as Map)['address'],
-      role: (doc.data() as Map)['role'],
+      fullName: (doc.data() as Map)['fullName'] ?? '',
+      email: (doc.data() as Map)['email'] ?? '',
+      phone: (doc.data() as Map)['phone'] ?? '',
+      address: (doc.data() as Map)['address'] ?? '',
+      role: (doc.data() as Map)['role'] ?? '',
       image: (doc.data() as Map)['image'] ?? '');
 
   factory UserModel.fromMap(Map<String, dynamic> map) => UserModel(
         fullName: map['fullName'],
+        image: map['image'],
         email: map['email'],
         phone: map['phone'],
         address: map['address'],

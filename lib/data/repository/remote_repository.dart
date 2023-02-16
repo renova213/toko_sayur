@@ -9,6 +9,7 @@ import 'package:toko_sayur/model/user_model.dart';
 import '../../model/cart_model.dart';
 import '../../model/checkout_model.dart';
 import '../../model/product_model.dart';
+import '../../model/review_model.dart';
 
 class RemoteRepository {
   final DBService service = DBService();
@@ -213,6 +214,25 @@ class RemoteRepository {
         },
       );
       return checkouts;
+    } catch (_) {
+      rethrow;
+    }
+  }
+
+  //review
+  Future<void> addReview(List<ReviewModel> review, String id) async {
+    try {
+      service.setDocument(
+        'product',
+        id,
+        {
+          'reviews': review
+              .map(
+                (e) => ReviewModel(review: e.review, user: e.user).toJson(),
+              )
+              .toList()
+        },
+      );
     } catch (_) {
       rethrow;
     }

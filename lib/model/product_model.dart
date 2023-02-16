@@ -35,15 +35,25 @@ class ProductModel {
         'productName': productName,
         'productImage': productImage,
         'productDescription': productDescription,
-        'productCategory': productCategory.map((e) => ProductCategoryModel(
-                categoryName: e.categoryName, price: e.price, stock: e.stock)
-            .toJson()),
+        'productCategory': productCategory
+            .map((e) => ProductCategoryModel(
+                    categoryName: e.categoryName,
+                    price: e.price,
+                    stock: e.stock)
+                .toJson())
+            .toList(),
         'reviews': reviews.isEmpty
             ? []
             : reviews
                 .map(
                     (e) => ReviewModel(review: e.review, user: e.user).toJson())
                 .toList()
+      };
+
+  Map<String, dynamic> review() => {
+        'reviews': reviews
+            .map((e) => ReviewModel(review: e.review, user: e.user).toJson())
+            .toList()
       };
 }
 

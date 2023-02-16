@@ -7,6 +7,7 @@ import 'package:toko_sayur/view_model/forgot_password_view_model.dart';
 import 'package:toko_sayur/view_model/login_view_model.dart';
 import 'package:toko_sayur/view_model/product_view_model.dart';
 import 'package:toko_sayur/view_model/register_view_model.dart';
+import 'package:toko_sayur/view_model/review_view_model.dart';
 import 'package:toko_sayur/view_model/user_view_model.dart';
 
 import '../../view_model/cart_view_model.dart';
@@ -24,6 +25,7 @@ class StateManagementHelper {
         ChangeNotifierProvider(create: (_) => FavoriteViewModel()),
         ChangeNotifierProvider(create: (_) => CheckoutViewModel()),
         ChangeNotifierProvider(create: (_) => AdminCheckoutViewModel()),
+        ChangeNotifierProvider(create: (_) => ReviewViewModel()),
       ],
       child: widget,
     );

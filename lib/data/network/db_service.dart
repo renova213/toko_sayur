@@ -172,4 +172,17 @@ class DBService implements BaseService {
       rethrow;
     }
   }
+
+  @override
+  Future<void> setDocument(
+      String collectionName, String id, Map<String, dynamic> data) async {
+    try {
+      await db.collection(collectionName).doc(id).set(
+            data,
+            SetOptions(merge: true),
+          );
+    } catch (_) {
+      rethrow;
+    }
+  }
 }

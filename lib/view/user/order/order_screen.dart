@@ -57,7 +57,8 @@ class _OrderScreenState extends State<OrderScreen> {
                 return GestureDetector(
                   onTap: () => Navigator.of(context).push(
                     NavigatorFadeHelper(
-                      child: DetailOrderScreen(checkout: data),
+                      child: DetailOrderScreen(
+                          checkout: data, indexCheckout: index),
                     ),
                   ),
                   child: Container(
