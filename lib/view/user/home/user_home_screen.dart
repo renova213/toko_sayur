@@ -131,7 +131,7 @@ class UserHomeScreen extends StatelessWidget {
                                                     .then((_) =>
                                                         Fluttertoast.showToast(
                                                             msg:
-                                                                'Added to cart'));
+                                                                'Added to Favorite'));
                                               } catch (e) {
                                                 Fluttertoast.showToast(
                                                     msg: e.toString());
